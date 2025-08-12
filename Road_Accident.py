@@ -1,13 +1,13 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-# Load and clean the data
+
 df = pd.read_csv(r"C:\Users\Joel Zerubabel\ML1\road_acccidents_ML_mini_project.csv")
-df.columns = df.columns.str.strip()  # Remove accidental spaces
+df.columns = df.columns.str.strip() 
 df.drop(['sno', 'latitude', 'longitude'], axis=1, inplace=True)
 
 def fatalities(year):
-    # Define relevant columns
+  
     cols = [
         f'death_by_lorries__{year}',
         f'death_by_carsjeeps_{year}',
@@ -21,7 +21,7 @@ def fatalities(year):
     df[cols] = df[cols].apply(pd.to_numeric, errors='coerce').fillna(0)
     df['district'] = df['district'].astype(str).str.strip()
     
-    # Handle fatality total column
+    
     fatal_col = f'{year}_fatal'
     if fatal_col in df.columns:
         df[fatal_col] = pd.to_numeric(df[fatal_col], errors='coerce').fillna(0)
@@ -30,7 +30,7 @@ def fatalities(year):
     else:
         df['Unclassified'] = 0
     
-    # Group by district to merge duplicates
+ 
     df_grouped = df.groupby('district', as_index=False)[cols + ['Unclassified']].sum()
     
     # Plot
@@ -49,8 +49,8 @@ def fatalities(year):
     plt.tight_layout()
     plt.show()
 
-# Example usage
-#fatalities(2021)
+
+fatalities(2021)
 
 def no_of_fatalities(df):
     
